@@ -1,6 +1,6 @@
 // src/Navbar.js
 import React from "react";
-import logo from "../assests/logo.jpg"; // Replace with your actual logo file path
+import logo from "../images/logo.jpg"; // Replace with your actual logo file path
 
 const Navbar = () => {
   return (
@@ -28,7 +28,15 @@ const Navbar = () => {
         </div>
 
         {/* User Account */}
+
         <div>
+          <a
+            href="/signup"
+            className="bg-blue-500 px-3 py-1 rounded hover:bg-blue-600"
+          >
+            Signup
+          </a>
+          <span className="mx-2"></span>
           <a
             href="/login"
             className="bg-blue-500 px-3 py-1 rounded hover:bg-blue-600"

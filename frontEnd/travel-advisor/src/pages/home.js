@@ -1,9 +1,9 @@
 import React from "react";
 
-import background from "../assets/background.jpg";
-import paris from "../assets/pairs.jpg";
-import tokyo from "../assets/tokyo.jpg";
-import newyork from "../assets/newyork.jpg";
+import background from "../images/background.jpg";
+import paris from "../images/pairs.jpg";
+import tokyo from "../images/tokyo.jpg";
+import newyork from "../images/newyork.jpg";
 const Home = () => {
   return (
     <div className="bg-gray-100">
