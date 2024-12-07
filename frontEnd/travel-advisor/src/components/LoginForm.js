@@ -1,55 +1,50 @@
 import React, { useState } from "react";
-import axios from "axios";
-const SignUpForm = () => {
+import { data } from "react-router-dom";
+
+const LoginForm = () => {
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
     password: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let response = await axios.post(
-      "http://localhost:8000/auth/register",
-      formData
-    );
-    if (response.status === 400) {
-      alert("User alreay registered");
-    } else if (response.status === 200) {
-      window.location.href = "/login";
+    const { email, password } = formData;
+
+    try {
+      const response = await fetch("http://localhost:8000/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        alert("Login successful!");
+        // Handle successful login (e.g., save token, redirect)
+      } else {
+        alert(data.message || "An error occurred. Please try again later.");
+      }
+    } catch (error) {
+      console.error("Error logging in:", error);
+      alert("An error occurred. Please try again later.");
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center mb-6">Sign Up</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Name */}
-          <div>
-            <label
-              htmlFor="name"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-              className="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-              placeholder="Your name"
-            />
-          </div>
-
+        <form onSubmit={handleSubmit}>
           {/* Email */}
           <div>
             <label
@@ -91,12 +86,12 @@ const SignUpForm = () => {
           </div>
 
           {/* Submit Button */}
-          <div>
+          <div className="mt-4">
             <button
               type="submit"
-              className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
             >
-              Sign Up
+              Login
             </button>
           </div>
         </form>
@@ -105,4 +100,4 @@ const SignUpForm = () => {
   );
 };
 
-export default SignUpForm;
+export default LoginForm;
