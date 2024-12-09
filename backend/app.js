@@ -2,10 +2,11 @@ import express from "express";
 import session from "express-session";
 import cookieParser from "cookie-parser";
 import auth from "./routes/auth.js";
-//import passport from "./config/auth.js";
+import passport from "./config/auth.js";
 import path from "path"; // Import path module to serve React
 import cors from "cors";
 import connectDB from "./modules/db.js";
+import recommendation from "./routes/recommendation.js";
 const app = express();
 const port = 8000;
 const hostname = "localhost";
@@ -37,10 +38,11 @@ app.use(
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
-// app.use(passport.initialize());
-// app.use(passport.session()); // Initialize Passport session
-app.use("/auth", auth);
+app.use(passport.initialize());
+app.use(passport.session()); // Initialize Passport session
 
+app.use("/auth", auth);
+app.use("/trip", recommendation);
 app.listen(port, () => {
   console.log(`Server running at ${hostname}:${port}`);
 });

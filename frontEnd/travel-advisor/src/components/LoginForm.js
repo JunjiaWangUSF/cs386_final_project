@@ -30,7 +30,7 @@ const LoginForm = () => {
 
       if (response.ok) {
         const data = await response.json();
-        alert("Login successful!");
+        window.location.href = "/travel-advisor";
         // Handle successful login (e.g., save token, redirect)
       } else {
         alert(data.message || "An error occurred. Please try again later.");
