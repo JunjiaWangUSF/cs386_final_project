@@ -16,7 +16,8 @@ const SignUpForm = () => {
     e.preventDefault();
     let response = await axios.post(
       "http://localhost:8000/auth/register",
-      formData
+      formData,
+      { withCredentials: true }
     );
     if (response.status === 400) {
       alert("User alreay registered");

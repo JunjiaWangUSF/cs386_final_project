@@ -39,13 +39,16 @@ router.post("/login", (req, res, next) => {
       console.warn("Authentication failed:", info.message);
       return res.status(400).send(info.message);
     }
-    req.logIn(user, (err) => {
+    req.login(user, (err) => {
       if (err) {
         console.error("Error logging in:", err);
         return res.status(500).send("An error occurred during login");
       }
+      console.log("Login successful:", user);
+      // Ensure session cookie is set correctly
       return res.status(200).json({ message: "Login successful", user });
     });
+    console.log('Session after login:', req.session);  // Log session for debugging
   })(req, res, next);
 });
 

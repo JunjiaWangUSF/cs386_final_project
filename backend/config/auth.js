@@ -25,7 +25,7 @@ passport.use(
         if (!isMatch) {
           return done(null, false, { message: "Incorrect email or password" });
         }
-
+        console.log('local stragetgy User:', user);
         return done(null, user);
       } catch (err) {
         return done(err);
@@ -35,18 +35,22 @@ passport.use(
 );
 
 // Serialize user to store in session
+// passport.serializeUser((user, done) => {
+//   done(null, user.id);
+
+// });
 passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
-// Deserialize user from session
 passport.deserializeUser(async (id, done) => {
   try {
-    const user = await User.findById(id);
+    const user = await User.findById(id); // Use async/await instead of callback
     done(null, user);
   } catch (err) {
     done(err);
   }
 });
+
 
 export default passport;

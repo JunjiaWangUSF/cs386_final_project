@@ -81,17 +81,17 @@ Plan the trip as if you are a local travel expert crafting a personalized experi
     });
 
     // Step 3: Parse and Validate JSON
-    console.log(responseText);
+
     let itineraryData;
     try {
       itineraryData = JSON.parse(responseText);
-      console.log(itineraryData);
+
 
       itineraryData = itineraryData.itinerary;
       itineraryData.forEach((itinerary) => {
-        console.log(itinerary.day);
+
         itinerary.activities.forEach((activity) => {
-          console.log(activity);
+
         });
       });
     } catch (err) {

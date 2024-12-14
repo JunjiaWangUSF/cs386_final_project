@@ -19,7 +19,7 @@ const TravelAdvisorForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+
 
     try {
       const res = await axios.post(
@@ -141,6 +141,7 @@ const TravelAdvisorForm = () => {
       <div className="mt-8 flex items-center justify-center ">
         {itineraryData && <Itinerary data={itineraryData} />}
       </div>
+
     </>
   );
 };

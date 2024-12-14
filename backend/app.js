@@ -7,46 +7,52 @@ import path from "path"; // Import path module to serve React
 import cors from "cors";
 import connectDB from "./modules/db.js";
 import recommendation from "./routes/recommendation.js";
+import share from "./routes/share.js";
+
 const app = express();
 const port = 8000;
 const hostname = "localhost";
+
+// Connect to MongoDB
 connectDB(true, () => {
   console.log("MongoDB connected successfully.");
 });
 
-app.use(express.json());
-
+// Middlewares
+app.use(express.json()); // Body parser for JSON
+app.use(express.urlencoded({ extended: true })); // Body parser for URL-encoded forms
 app.use(
   cors({
-    origin: "http://localhost:3000", // React frontend URL
-    credentials: true,
+    origin: "http://localhost:3000", // Ensure this matches your frontend's URL
+    credentials: true, // Allow credentials (cookies) to be sent cross-origin
   })
 );
-// Middleware for session management
+app.use(cookieParser()); // Cookie parser for managing cookies
+
+// Session management should come after cookieParser
 app.use(
   session({
-    secret: "yourSecretKey", // Use a strong secret key
+    secret: "your_secret_key",
     resave: false,
-    saveUninitialized: true,
-    cookie: {
-      secure: process.env.PRODUCTION === "true", // Only secure in production with HTTPS
-      maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week expiration
-      sameSite: "Lax", // 'Lax' for same-site requests
-    },
+    saveUninitialized: false,
   })
 );
-// Middleware
-app.use(express.json());
-app.use(cookieParser());
+
+// Passport middleware (initialize and use session)
 app.use(passport.initialize());
 app.use(passport.session()); // Initialize Passport session
 
+// Routes
 app.use("/auth", auth);
 app.use("/trip", recommendation);
+app.use("/trip", share);
+
+// Start server
 app.listen(port, () => {
   console.log(`Server running at ${hostname}:${port}`);
 });
 
+// Graceful shutdown on SIGINT
 process.on("SIGINT", () => {
   console.log("SIGINT received. Closing MongoDB connection...");
   connectDB(false, () => {

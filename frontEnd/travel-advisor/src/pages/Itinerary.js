@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from "react";
 
 const Itinerary = ({ data }) => {
@@ -5,7 +6,10 @@ const Itinerary = ({ data }) => {
   if (!data || !Array.isArray(data)) {
     return <p>No itinerary data available.</p>;
   }
-
+  const handleClick = () => {
+    axios.post("http://localhost:8000/trip/share", data, { withCredentials: true });
+    //window.location.href = "http://localhost:3000/all-itineraries";
+  }
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-4">
       <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg">
@@ -44,6 +48,7 @@ const Itinerary = ({ data }) => {
           ))}
         </div>
       </div>
+      <button className="w-full bg-indigo-600 text-white py-4 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500" onClick={handleClick}>Share your itinerary</button>
     </div>
   );
 };

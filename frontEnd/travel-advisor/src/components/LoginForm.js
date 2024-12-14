@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { data } from "react-router-dom";
-
+import axios from "axios";
 const LoginForm = () => {
   const [formData, setFormData] = useState({
     email: "",
@@ -20,16 +20,14 @@ const LoginForm = () => {
     const { email, password } = formData;
 
     try {
-      const response = await fetch("http://localhost:8000/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      const res = await axios.post(
+        "http://localhost:8000/auth/login",
+        { email, password },
+        { withCredentials: true }
+      );
 
-      if (response.ok) {
-        const data = await response.json();
+      if (res.status === 200) {
+        const data = res.data;
         window.location.href = "/travel-advisor";
         // Handle successful login (e.g., save token, redirect)
       } else {
