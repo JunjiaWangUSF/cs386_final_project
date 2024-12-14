@@ -8,7 +8,7 @@ const Itinerary = ({ data }) => {
   }
   const handleClick = () => {
     axios.post("http://localhost:8000/trip/share", data, { withCredentials: true });
-    //window.location.href = "http://localhost:3000/all-itineraries";
+    window.location.href = "http://localhost:3000/itinerary";
   }
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-4">

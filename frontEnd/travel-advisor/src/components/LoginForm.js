@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { data } from "react-router-dom";
 import axios from "axios";
 const LoginForm = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -26,6 +28,7 @@ const LoginForm = () => {
         { withCredentials: true }
       );
 
+      localStorage.setItem("isLoggedIn", true);
       if (res.status === 200) {
         const data = res.data;
         window.location.href = "/travel-advisor";

@@ -2,11 +2,13 @@
 import React from "react";
 
 const Footer = () => {
+
+  const currentDate = new Date().toDateString();
   return (
     <footer className="bg-gray-800 text-white py-6">
       <div className="container mx-auto px-4 text-center">
         <h2 className="text-lg font-semibold mb-2">
-          Explore the World with Us
+          Explore the World with Us, {`${currentDate}`}
         </h2>
         <p className="text-gray-400 mb-4">
           Your travel companion for weather, advice, and shared experiences.

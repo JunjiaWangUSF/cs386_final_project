@@ -3,6 +3,10 @@ import axios from "axios";
 import Itinerary from "./Itinerary";
 import { data } from "react-router-dom";
 const TravelAdvisorForm = () => {
+  const loginStatus = localStorage.getItem("isLoggedIn");
+  if (loginStatus !== "true") {
+    window.location.href = "/login";
+  }
   const [formData, setFormData] = useState({
     destination: "",
     startDate: "",
