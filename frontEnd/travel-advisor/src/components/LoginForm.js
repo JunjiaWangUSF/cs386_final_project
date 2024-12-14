@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { data } from "react-router-dom";
 import axios from "axios";
+import backend from "../service/service";
 const LoginForm = () => {
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -20,10 +22,11 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { email, password } = formData;
-
+    console.log("hi!!" + backend)
     try {
       const res = await axios.post(
-        "http://localhost:8000/auth/login",
+        `${backend}/auth/login`
+        ,
         { email, password },
         { withCredentials: true }
       );

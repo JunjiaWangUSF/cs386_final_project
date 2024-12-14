@@ -8,10 +8,17 @@ import cors from "cors";
 import connectDB from "./modules/db.js";
 import recommendation from "./routes/recommendation.js";
 import share from "./routes/share.js";
+import dotenv from "dotenv";
+dotenv.config(); // Load environment variables
+import { fileURLToPath } from "url";
+
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
-const port = 8000;
-const hostname = "localhost";
+const port = process.env.PORT || 8000;
+const hostname = process.env.HOSTNAME || "localhost";
 
 // Connect to MongoDB
 connectDB(true, () => {
@@ -19,17 +26,17 @@ connectDB(true, () => {
 });
 
 // Middlewares
-app.use(express.json()); // Body parser for JSON
-app.use(express.urlencoded({ extended: true })); // Body parser for URL-encoded forms
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: "http://localhost:3000", // Ensure this matches your frontend's URL
-    credentials: true, // Allow credentials (cookies) to be sent cross-origin
+    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    credentials: true,
   })
 );
-app.use(cookieParser()); // Cookie parser for managing cookies
+app.use(cookieParser());
 
-// Session management should come after cookieParser
+// Session management
 app.use(
   session({
     secret: "your_secret_key",
@@ -38,21 +45,27 @@ app.use(
   })
 );
 
-// Passport middleware (initialize and use session)
+// Passport middleware
 app.use(passport.initialize());
-app.use(passport.session()); // Initialize Passport session
+app.use(passport.session());
+
+//Serve React build folder
+app.use(express.static(path.resolve(__dirname, "frontEnd/build")));
+
 
 // Routes
 app.use("/auth", auth);
 app.use("/trip", recommendation);
-app.use("/trip", share);
-
+app.use("/mytrip", share);
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "frontEnd/build", "index.html"));
+});
 // Start server
 app.listen(port, () => {
-  console.log(`Server running at ${hostname}:${port}`);
+  console.log(`Server running at http://${hostname}:${port}`);
 });
 
-// Graceful shutdown on SIGINT
+// Graceful shutdown
 process.on("SIGINT", () => {
   console.log("SIGINT received. Closing MongoDB connection...");
   connectDB(false, () => {
